@@ -1,0 +1,18 @@
+model:
+  path: "models/yolo26s.onnx"
+  device: "auto"
+inference:
+  conf: 0.5
+  iou: 0.5
+  imgsz: 640
+sahi:
+  slice_height: 640
+  slice_width: 640
+  overlap_height_ratio: 0.2
+  overlap_width_ratio: 0.2
+  postprocess_type: "GREEDYNMM"
+  postprocess_match_metric: "IOS"
+  postprocess_match_threshold: 0.5
+benchmark:
+  warmup_frames: 10
+  measured_frames: 100

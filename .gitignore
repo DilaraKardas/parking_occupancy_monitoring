@@ -1,5 +1,33 @@
+# Sanal Ortamlar
 .venv/
+env/
+venv/
+
+# Python Cache & Derleme Dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Model & Ağır Dosyalar (Ağırlıklar, Çıktılar)
 runs/
 *.pt
+*.onnx
+*.weights
+
+# Medya / Video Dosyaları ve Çıktıları
 *.avi
 *.mp4
+*.mkv
+*.mov
+
+# IDE / Editör Ayarları
+.vscode/
+.idea/
+
+# İşletim Sistemi Geçici Dosyaları
+.DS_Store
+Thumbs.db
+
+# Yerel Test / Benchmark Çıktıları (Eğer otomatik üretiliyorsa)
+# benchmark_*.csv
+# benchmark_*.xlsx
