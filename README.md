@@ -35,14 +35,15 @@ Projenin mevcut kapsamı:
 ## 3. Proje Dosya Yapısı
 
 ```text
-parking_occ/
+parking_occupancy_monitoring/
 │
 ├── core/
 │   ├── __init__.py
 │   └── settings.py
 │
-├── models/
-│   └── yolo26s.onnx
+├── models/                     # git'e dahil değil, elle oluşturulur
+│   ├── yolo26s.pt              # Ultralytics'ten indirilir
+│   └── yolo26s.onnx            # export_onnx.py ile üretilir
 │
 ├── runs/
 │
@@ -56,9 +57,8 @@ parking_occ/
 │   ├── __init__.py
 │   └── video_utils.py
 │
-├── videos/
-│   ├── parking_lot_640p.mp4
-│   └── parking_lot.mp4
+├── videos/                     # git'e dahil değil, elle oluşturulur
+│   └── parking_lot_640p.mp4    # Google Drive'dan indirilir
 │
 ├── .gitignore
 ├── config.yaml
@@ -248,7 +248,7 @@ Benchmark sonuçları CSV formatında kaydedilir:
 
 ```bash
 git clone https://github.com/DilaraKardas/parking_occupancy_monitoring.git
-cd REPOSITORY
+cd parking_occupancy_monitoring
 ```
 
 ### Sanal ortam oluşturma
@@ -275,9 +275,46 @@ pip install -r requirements.txt
 
 Not: PyTorch ve CUDA kurulumunun kullanılan donanımla uyumlu olması gerekir. ONNX modelinin Ultralytics/SAHI entegrasyonuyla çalışması için gerekli bağımlılıkların da kurulu olması gerekir.
 
+### Model ve video dosyalarını hazırlama
+
+Video (`*.mp4`) ve model (`*.pt`, `*.onnx`) dosyaları `.gitignore` ile hariç tutulduğu için repository'de bulunmaz. Video dosyası GitHub'ın 100 MB sınırını aştığı için commit edilmez. `python main.py` komutunu çalıştırmadan önce bu dosyaları elle hazırlamanız gerekir.
+
+Önce proje ana dizininde klasörleri oluşturun:
+
+```bash
+mkdir models videos
+```
+
+**1. Video (`videos/parking_lot_640p.mp4`)**
+
+Videoyu [Google Drive üzerinden](https://drive.google.com/file/d/1T2wn-SHik10mIiYo52cW0My7XXa--b6B/view?usp=sharing) indirin ve `videos/parking_lot_640p.mp4` adıyla kaydedin. Uygulama videoyu `core/settings.py` içindeki `VIDEO_PATH` (`videos/parking_lot_640p.mp4`) yolundan okur.
+
+**2. Model (`models/yolo26s.onnx`)**
+
+ONNX modeli `export_onnx.py` betiği ile PyTorch ağırlıklarından üretilir:
+
+1. Ultralytics'in resmi `yolo26s.pt` ağırlığını [Ultralytics assets](https://github.com/ultralytics/assets/releases) sayfasından indirip `models/yolo26s.pt` olarak kaydedin (veya `python -c "from ultralytics import YOLO; YOLO('yolo26s.pt')"` komutuyla indirip dosyayı `models/` klasörüne taşıyın).
+2. ONNX'e dönüştürün:
+
+   ```bash
+   python export_onnx.py
+   ```
+
+   Bu komut `models/yolo26s.onnx` dosyasını oluşturur. Bu yol `config.yaml` içindeki `model.path` değeriyle aynıdır.
+
+Hazırlık sonrası klasörler şu şekilde olmalıdır:
+
+```text
+models/
+├── yolo26s.pt
+└── yolo26s.onnx
+videos/
+└── parking_lot_640p.mp4
+```
+
 ## 9. Projeyi Çalıştırma
 
-Gerekli model ağırlığının `models/` klasöründe, giriş videosunun ise `videos/` klasöründe bulunduğundan emin olun. Videoyu [burdan](https://drive.google.com/file/d/1T2wn-SHik10mIiYo52cW0My7XXa--b6B/view?usp=sharing) indirebilirsiniz.
+Gerekli model ağırlığının (`models/yolo26s.onnx`) `models/` klasöründe, giriş videosunun (`videos/parking_lot_640p.mp4`) ise `videos/` klasöründe bulunduğundan emin olun (bkz. [Model ve video dosyalarını hazırlama](#model-ve-video-dosyalarını-hazırlama)).
 
 Proje ana dizinindeyken:
 
