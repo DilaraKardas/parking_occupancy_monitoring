@@ -35,38 +35,57 @@ Projenin mevcut kapsamı:
 ## 3. Proje Dosya Yapısı
 
 ```text
-parking_occ/
+parking_occupancy_monitoring/
 │
 ├── core/
+│   ├── __pycache__/
 │   ├── __init__.py
 │   └── settings.py
 │
 ├── models/
-│   └── yolo26s.onnx
+│   ├── yolo26n.pt
+│   ├── yolo26s.onnx
+│   └── yolo26s.pt
+│
+├── notebooks/
+│   └── parking_lot_test.ipynb
+│
+├── results/
+│   └── benchmarks/
+│       ├── benchmark_frames.csv
+│       └── benchmark_summary.csv
+│
+├── roi/
+│   └── parking_roi.json
 │
 ├── runs/
+│   ├── detect/
+│   └── parking_lot_boxes_*.mp4
+│
+├── scripts/
+│   ├── demo.py
+│   ├── export_onnx.py
+│   └── resize_video.py
 │
 ├── services/
+│   ├── __pycache__/
 │   ├── __init__.py
 │   └── detector.py
 │
 ├── tests/
 │
 ├── utils/
+│   ├── __pycache__/
 │   ├── __init__.py
 │   └── video_utils.py
 │
 ├── videos/
-│   ├── parking_lot_640p.mp4
-│   └── parking_lot.mp4
 │
 ├── .gitignore
 ├── config.yaml
-├── export_onnx.py
 ├── main.py
-├── requirements.txt
-├── resize_video.py
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ### Dosyaların görevleri
