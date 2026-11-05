@@ -1,0 +1,2 @@
+model,device,video,warmup_frames,measured_frames,average_latency_ms,average_fps,measurement_scope
+models/yolo26s.onnx,cpu,parking_lot_960p.mp4,10,100,274.981,3.637,BGR-to-RGB conversion + SAHI prediction; excludes drawing and video writing

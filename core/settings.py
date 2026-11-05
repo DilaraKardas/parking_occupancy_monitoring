@@ -1,25 +1,26 @@
 from pathlib import Path
 import torch
 import yaml
+import os
 
 # 1. Ortamın Google Colab olup olmadığını otomatik kontrol et
 IN_COLAB = Path("/content").exists()
 
-# 2. Ortama göre ana dizini otomatik belirle
-if IN_COLAB:
-    OUTPUT_DIR = Path("/content/drive/MyDrive/projects/parking_occ")
-else:
-    OUTPUT_DIR = Path(__file__).resolve().parent.parent #şu anki dosyanın bulunduğu dizinin bir üst dizini
+# project path otomatically arranged by the script, but can be overridden by the user
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+OUTPUT_DIR = Path(os.getenv("PARKING_DATA_DIR", PROJECT_ROOT))
 
+CONFIG_PATH = PROJECT_ROOT / "config.yaml"
+with open(CONFIG_PATH, "r", encoding="utf-8") as file:
+    config = yaml.safe_load(file)
 
-CONFIG_PATH = OUTPUT_DIR / "config.yaml"
-VIDEO_PATH = OUTPUT_DIR / "videos" / "parking_lot_640p.mp4"
+VIDEO_PATH = PROJECT_ROOT / config["paths"]["video_path"]
 
 # YAML dosyasını oku
 with open(CONFIG_PATH, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
-MODEL_PATH = config["model"]["path"]
+MODEL_PATH = PROJECT_ROOT / config["model"]["path"]
 
 CONFIDENCE_THRESHOLD = config["inference"]["conf"]
 MODEL_IOU = config["inference"]["iou"]
@@ -56,6 +57,12 @@ EXPERIMENT_ID = (
     f"_imgsz{IMGSZ}"
 )
 
-OUTPUT_PATH = OUTPUT_DIR / f"parking_lot_boxes_{EXPERIMENT_ID}.mp4"
-SUMMARY_PATH = OUTPUT_DIR / f"benchmark_summary_{EXPERIMENT_ID}.csv"
-FRAME_RESULTS_PATH = OUTPUT_DIR / f"benchmark_frames_{EXPERIMENT_ID}.csv"
+VIDEO_OUTPUT_DIR = OUTPUT_DIR / "runs" 
+BENCHMARK_OUTPUT_DIR = OUTPUT_DIR / "results" / "benchmarks"
+
+VIDEO_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+BENCHMARK_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+OUTPUT_PATH = VIDEO_OUTPUT_DIR / f"parking_lot_boxes_{EXPERIMENT_ID}.mp4"
+SUMMARY_PATH = BENCHMARK_OUTPUT_DIR / f"benchmark_summary_{EXPERIMENT_ID}.csv"
+FRAME_RESULTS_PATH = BENCHMARK_OUTPUT_DIR / f"benchmark_frames_{EXPERIMENT_ID}.csv"
