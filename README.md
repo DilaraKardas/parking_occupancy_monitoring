@@ -32,7 +32,21 @@ Projenin mevcut kapsamı:
 | PyTorch | Donanım kontrolü ve GPU senkronizasyonu |
 | PyYAML | YAML yapılandırma dosyasını okuma |
 
-## 3. Proje Dosya Yapısı
+## 3. Model Seçimi
+
+Proje kapsamında YOLO serisinin farklı varyantları (`yolo26n`, `yolo26s` ve `yolo26m`) karşılaştırılmıştır. Tüm model testleri adil bir değerlendirme yapabilmek amacıyla **aynı cihaz (`cuda:0`)** ve **aynı ısınma karesi (`warmup_frames: 10`)** parametreleri ile gerçekleştirilmiştir. 
+
+Yapılan değerlendirmeler sonucunda; FPS performansı, çıkarım gecikmesi (latency) ve yanlış pozitif/negatif (FP/FN) analizleri birlikte ele alındığında en dengeli ve başarılı sonucun **`yolo26s.pt`** modelinde elde edildiği görülmüş ve ana model olarak bu model seçilmiştir.
+
+### Model Karşılaştırma Tablosu
+
+| Model | average_latency_ms | average_fps |
+| :--- | :---: | :---: |
+| `yolo26n.pt` | 135.016 | 7.407 |
+| `yolo26s.pt` | 137.681 | 7.263 |
+| `yolo26m.pt` | 145.686 | 6.864 |
+
+## 4. Proje Dosya Yapısı
 
 ```text
 parking_occupancy_monitoring/
@@ -128,7 +142,7 @@ Modelin ONNX formatına dönüştürülmesi için kullanılan yardımcı betikti
 
 Giriş videosunun yeniden boyutlandırılması için kullanılan yardımcı betiktir.
 
-## 4. Araç Sınıfları
+## 5. Araç Sınıfları
 
 Proje, COCO veri kümesinde tanımlanan aşağıdaki dört araç sınıfına odaklanmaktadır:
 
@@ -147,7 +161,7 @@ VEHICLE_CLASSES = {2, 3, 5, 7}
 
 Bu filtre, inference sonucunda dönen tahminler arasından yalnızca ilgili araç sınıflarının işlenmesini sağlar.
 
-## 5. SAHI Yapılandırması
+## 6. SAHI Yapılandırması
 
 SAHI, görüntüyü daha küçük dilimlere ayırarak her dilim üzerinde ayrı nesne tespiti gerçekleştirmeyi sağlar.
 
@@ -169,7 +183,7 @@ Projede kullanılan temel SAHI parametreleri:
 
 **IOS (Intersection over Smaller Area)**, iki bounding box arasındaki örtüşmeyi küçük olan kutunun alanına göre değerlendiren eşleştirme metriğidir.
 
-## 6. Model ve Inference Parametreleri
+## 7. Model ve Inference Parametreleri
 
 Model ve inference ayarları `config.yaml` üzerinden yönetilir.
 
@@ -207,7 +221,7 @@ benchmark:
 
 Bu parametreler değiştirilerek farklı deneyler gerçekleştirilebilir.
 
-## 7. Benchmark ve Performans Ölçümü
+## 8. Benchmark ve Performans Ölçümü
 
 Model performansını daha tutarlı ölçebilmek için benchmark sürecinde iki aşama uygulanmaktadır.
 
@@ -254,7 +268,7 @@ Benchmark sonuçları CSV formatında kaydedilir:
 - `benchmark_summary_*.csv`: Genel performans özeti.
 - `benchmark_frames_*.csv`: Kare bazında latency ve FPS değerleri.
 
-## 8. Kurulum
+## 9. Kurulum
 
 ### Gereksinimler
 
@@ -294,7 +308,7 @@ pip install -r requirements.txt
 
 Not: PyTorch ve CUDA kurulumunun kullanılan donanımla uyumlu olması gerekir. ONNX modelinin Ultralytics/SAHI entegrasyonuyla çalışması için gerekli bağımlılıkların da kurulu olması gerekir.
 
-## 9. Projeyi Çalıştırma
+## 10. Projeyi Çalıştırma
 
 Gerekli model ağırlığının `models/` klasöründe, giriş videosunun ise `videos/` klasöründe bulunduğundan emin olun. Videoyu [burdan](https://drive.google.com/file/d/1T2wn-SHik10mIiYo52cW0My7XXa--b6B/view?usp=sharing) indirebilirsiniz.
 
@@ -314,7 +328,7 @@ Program:
 6. FPS bilgisini gösterir.
 7. Benchmark sonuçlarını CSV dosyalarına kaydeder.
 
-## 10. Çıktılar
+## 11. Çıktılar
 
 Video işleme sonucunda:
 
@@ -324,7 +338,7 @@ Video işleme sonucunda:
 
 Çıktı dosyaları `core/settings.py` içerisinde belirlenen `OUTPUT_DIR` dizinine kaydedilir.
 
-## 11. Mevcut Geliştirme Durumu
+## 12. Mevcut Geliştirme Durumu
 
 - [x] YOLO26s modelinin kullanılması.
 - [x] Modelin ONNX formatında çalıştırılması.
@@ -337,7 +351,7 @@ Video işleme sonucunda:
 - [x] Deney parametrelerinin YAML üzerinden yönetilmesi.
 - [x] Yerel ortamda model inference işlemi.
 
-## 12. Gelecek Geliştirmeler
+## 13. Gelecek Geliştirmeler
 
 - [ ] Otopark alanlarının tanımlanması.
 - [ ] Park alanlarının dolu/boş durumunun belirlenmesi.
