@@ -277,7 +277,7 @@ Not: PyTorch ve CUDA kurulumunun kullanılan donanımla uyumlu olması gerekir. 
 
 ## 9. Projeyi Çalıştırma
 
-Gerekli model ağırlığının `models/` klasöründe, giriş videosunun ise `videos/` klasöründe bulunduğundan emin olun.
+Gerekli model ağırlığının `models/` klasöründe, giriş videosunun ise `videos/` klasöründe bulunduğundan emin olun. Videoyu [burdan](https://drive.google.com/file/d/1T2wn-SHik10mIiYo52cW0My7XXa--b6B/view?usp=sharing) indirebilirsiniz.
 
 Proje ana dizinindeyken:
 
