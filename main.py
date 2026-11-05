@@ -3,12 +3,12 @@ import cv2
 import torch
 
 from core.settings import (
-    VIDEO_PATH,
     OUTPUT_PATH,
     DEVICE,
     WARMUP_FRAMES,
     BENCHMARK_FRAMES,
     VEHICLE_CLASSES,
+    VIDEO_PATH,
     MODEL_PATH,
     CONFIDENCE_THRESHOLD,
     MODEL_IOU,
