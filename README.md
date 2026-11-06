@@ -268,21 +268,27 @@ Benchmark sonuçları CSV formatında kaydedilir:
 - `benchmark_summary_*.csv`: Genel performans özeti.
 - `benchmark_frames_*.csv`: Kare bazında latency ve FPS değerleri.
 
-## 9. Kurulum
+## 9. Model Ağırlıkları ve Kurulum
 
-### Gereksinimler
+Çıkarım (inference), video işleme ve takip hatlarını (pipelines) çalıştırabilmek için önceden eğitilmiş model ağırlıklarının `models/` dizinine ve örnek test videosunun da `videos/` dizinine eklenmesi gereklidir.
 
-- Python 3.x
-- NVIDIA GPU (GPU hızlandırması için)
-- CUDA ile uyumlu PyTorch kurulumu
-- Projede kullanılan Python kütüphaneleri
+### Ağırlıkları ve Örnek Videoyu İndirin
+Model ağırlıklarını ve test videolarını sıfırdan indirmekle uğraşmamak için aşağıdaki Google Drive bağlantısını kullanabilirsiniz:
 
-### Repository'yi klonlama
+* **[Google Drive - Model Ağırlıkları ve Örnek Videoları İndir](https://drive.google.com/drive/folders/1SefYxWOFl9EqymYb1tRAaftRkoSKdkJ_?usp=sharing)**
 
-```bash
-git clone https://github.com/DilaraKardas/parking_occupancy_monitoring.git
-cd REPOSITORY
-```
+İndirdiğiniz dosyaları proje dizininde aşağıdaki konumlara yerleştirin:
+
+Proje dizin yapınızın şu şekilde olması gerekir:
+```text
+parking_occ/
+├── models/
+│   └── yolo26s.onnx
+├── videos/
+│   └── parking_lot.mp4
+├── core/
+├── scripts/
+└── README.md
 
 ### Sanal ortam oluşturma
 
@@ -309,8 +315,6 @@ pip install -r requirements.txt
 Not: PyTorch ve CUDA kurulumunun kullanılan donanımla uyumlu olması gerekir. ONNX modelinin Ultralytics/SAHI entegrasyonuyla çalışması için gerekli bağımlılıkların da kurulu olması gerekir.
 
 ## 10. Projeyi Çalıştırma
-
-Gerekli model ağırlığının `models/` klasöründe, giriş videosunun ise `videos/` klasöründe bulunduğundan emin olun. Videoyu [burdan](https://drive.google.com/file/d/1T2wn-SHik10mIiYo52cW0My7XXa--b6B/view?usp=sharing) indirebilirsiniz.
 
 Proje ana dizinindeyken:
 
