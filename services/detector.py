@@ -17,24 +17,23 @@ from core.settings import (
 )
 
 def load_model():
-    """YOLO ve SAHI tabanlı algılama modelini yükler."""
     print(f"Loading model: {MODEL_PATH}")
     detection_model = AutoDetectionModel.from_pretrained(
         model_type="ultralytics",
-        model_path=MODEL_PATH,
+        model_path=str(MODEL_PATH),
         confidence_threshold=CONFIDENCE_THRESHOLD,
         image_size=IMGSZ,
         device=DEVICE,
     )
-    # Model yalnızca araç sınıflarını tahmin etsin.
+    # model only detects vehicles (car, motorcycle, bus, truck)
     detection_model.model.overrides["classes"] = list(VEHICLE_CLASSES)
     
-    # Ultralytics NMS IoU eşiğini uygula
+    # Ultralytics NMS IoU threshold is set to 0.6 by default, but we want to use the value from the config.yaml file
     detection_model.model.overrides["iou"] = MODEL_IOU
     return detection_model
 
 def run_inference(frame_rgb, detection_model):
-    """Verilen RGB kare üzerinde dilimlenmiş (sliced) tahmin çalıştırır."""
+    """Runs sliced prediction on the given RGB frame."""
     result = get_sliced_prediction(
         image=frame_rgb,
         detection_model=detection_model,

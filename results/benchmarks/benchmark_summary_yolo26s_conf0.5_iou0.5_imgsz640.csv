@@ -1,2 +1,2 @@
 model,device,video,warmup_frames,measured_frames,average_latency_ms,average_fps,measurement_scope
-models/yolo26s.onnx,cpu,parking_lot_960p.mp4,10,100,274.981,3.637,BGR-to-RGB conversion + SAHI prediction; excludes drawing and video writing
+C:\Users\dlrka\source\repos\ithinka\parking_occ\models\yolo26s.onnx,cpu,parking_lot.mp4,10,5,1307.897,0.765,BGR-to-RGB conversion + SAHI prediction; excludes drawing and video writing

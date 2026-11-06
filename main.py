@@ -40,7 +40,7 @@ def main():
         fps, width, height, total_frames = open_video_info(VIDEO_PATH)
         print(f"Video: {width}x{height} at {fps:.2f} FPS")
 
-        # Modeli yükle
+        # load the detection model
         detection_model = load_model()
 
         cap = cv2.VideoCapture(str(VIDEO_PATH))
@@ -74,10 +74,10 @@ def main():
 
             frame_start = time.perf_counter()
 
-            # OpenCV BGR -> RGB dönüşümü
+            # OpenCV BGR -> RGB conversion
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            # Tahmin servisini çağır
+            # call the inference function to get predictions for the current frame
             result = run_inference(frame_rgb, detection_model)
 
             # if frame_count == 1:
@@ -104,14 +104,14 @@ def main():
             
             for prediction in result.object_prediction_list: 
                 class_id = int(prediction.category.id)
-                if class_id not in VEHICLE_CLASSES: # sınıf kontrolü yedek
+                if class_id not in VEHICLE_CLASSES: 
                     continue
 
                 x1, y1, x2, y2 = map(int, prediction.bbox.to_xyxy())
                 score = float(prediction.score.value)
                 class_name = prediction.category.name
 
-                # Bounding Box Çizimi
+                # Bounding Box 
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
                 label = f"{class_name}: {score:.2f}"

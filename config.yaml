@@ -17,4 +17,4 @@ benchmark:
   warmup_frames: 10
   measured_frames: 100
 paths:
-  video_path: "videos/parking_lot_960p.mp4"
+  video_path: "videos/parking_lot.mp4"
