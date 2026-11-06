@@ -3,7 +3,7 @@ import torch
 import yaml
 import os
 
-# 1. Ortamın Google Colab olup olmadığını otomatik kontrol et
+# check if the code is running in Google Colab
 IN_COLAB = Path("/content").exists()
 
 # project path otomatically arranged by the script, but can be overridden by the user
@@ -15,11 +15,6 @@ with open(CONFIG_PATH, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
 VIDEO_PATH = PROJECT_ROOT / config["paths"]["video_path"]
-
-# YAML dosyasını oku
-with open(CONFIG_PATH, "r", encoding="utf-8") as file:
-    config = yaml.safe_load(file)
-
 MODEL_PATH = PROJECT_ROOT / config["model"]["path"]
 
 CONFIDENCE_THRESHOLD = config["inference"]["conf"]
@@ -38,10 +33,10 @@ POSTPROCESS_MATCH_THRESHOLD = config["sahi"]["postprocess_match_threshold"]
 WARMUP_FRAMES = config["benchmark"]["warmup_frames"]
 BENCHMARK_FRAMES = config["benchmark"]["measured_frames"]
 
-# COCO sınıf ID'leri: car=2, motorcycle=3, bus=5, truck=7
+# COCO class IDs: car=2, motorcycle=3, bus=5, truck=7
 VEHICLE_CLASSES = {2, 3, 5, 7}
 
-# cuda ortama göre seçilir
+# cuda environment based selection
 configured_device = config["model"].get("device", "auto")
 
 if configured_device == "auto":
@@ -49,7 +44,7 @@ if configured_device == "auto":
 else:
     DEVICE = configured_device
 
-# Deney ID'si ve dosya yolları
+# Experiment ID and file paths
 EXPERIMENT_ID = (
     f"{Path(MODEL_PATH).stem}"
     f"_conf{CONFIDENCE_THRESHOLD}"

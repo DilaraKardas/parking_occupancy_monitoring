@@ -28,6 +28,6 @@ runs/
 .DS_Store
 Thumbs.db
 
-# Yerel Test / Benchmark Çıktıları (Eğer otomatik üretiliyorsa)
+# Local test / Benchmark results (if otomatically generated)
 # benchmark_*.csv
 # benchmark_*.xlsx

@@ -9,15 +9,15 @@ from core.settings import (
     VIDEO_PATH,
     WARMUP_FRAMES,
 )
-
 def sync_device():
-    """GPU işlemlerinin bitmesini bekler (Doğru zamanlama için)."""
+    # wait for cuda to finish all operations before measuring time
     if DEVICE.startswith("cuda") and torch.cuda.is_available():
         torch.cuda.synchronize()
 
 def draw_fps(frame, fps_value):
-    """Kare üzerine anlık FPS değerini yazar."""
+    # draws the current FPS value on the frame.
     text = f"FPS: {fps_value:.1f}"
+    
     font = cv2.FONT_HERSHEY_SIMPLEX
     scale, thickness, margin = 0.8, 2, 10
 
@@ -46,7 +46,7 @@ def draw_fps(frame, fps_value):
     )
 
 def open_video_info(video_path):
-    """Videonun özelliklerini (fps, genişlik, yükseklik, toplam kare) okur."""
+    # Opens the video file and retrieves its properties: FPS, width, height, and total frame count.
     if not video_path.exists():
         raise FileNotFoundError(f"Video not found: {video_path}")
 
@@ -72,7 +72,7 @@ def open_video_info(video_path):
     return fps, width, height, total_frames
 
 def save_benchmark_results(latencies, frame_numbers, measured_count):
-    """Benchmark ölçümlerini ve özetini CSV dosyalarına kaydeder."""
+    # Saves the benchmark results to CSV files and prints a summary.
     if not latencies:
         print("No benchmark measurements available.")
         return
@@ -81,7 +81,7 @@ def save_benchmark_results(latencies, frame_numbers, measured_count):
     average_latency_ms = total_time / measured_count * 1000
     average_fps = measured_count / total_time
 
-    # Kare bazlı gecikme sürelerini kaydet
+    # Per-frame results saved
     with open(FRAME_RESULTS_PATH, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(
             file,
@@ -95,7 +95,7 @@ def save_benchmark_results(latencies, frame_numbers, measured_count):
                 "fps_from_latency": round(1 / latency, 3),
             })
 
-    # Özet raporu kaydet
+    # Summary report saved
     with open(SUMMARY_PATH, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(
             file,
