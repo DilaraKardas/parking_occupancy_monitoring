@@ -1,33 +1,33 @@
-# Sanal Ortamlar
+# Virtual Environment and Python Environment
 .venv/
 env/
 venv/
 
-# Python Cache & Derleme Dosyaları
+# Python Cache & Bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Model & Ağır Dosyalar (Ağırlıklar, Çıktılar)
+# Model & big files (Weights, Outputs)
 runs/
 *.pt
 *.onnx
 *.weights
 
-# Medya / Video Dosyaları ve Çıktıları
+# Media / Video files
 *.avi
 *.mp4
 *.mkv
 *.mov
 
-# IDE / Editör Ayarları
+# IDE / Editör settings
 .vscode/
 .idea/
 
-# İşletim Sistemi Geçici Dosyaları
+# OS and Editor Files
 .DS_Store
 Thumbs.db
 
-# Local test / Benchmark results (if otomatically generated)
-# benchmark_*.csv
-# benchmark_*.xlsx
+# Local test / Benchmark results (if automatically generated)
+benchmark_*.csv
+benchmark_*.xlsx
