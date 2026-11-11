@@ -3,10 +3,7 @@ import torch
 import yaml
 import os
 
-# check if the code is running in Google Colab
-IN_COLAB = Path("/content").exists()
-
-# project path otomatically arranged by the script, but can be overridden by the user
+# project path automatically arranged by the script, but can be overridden by the user
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = Path(os.getenv("PARKING_DATA_DIR", PROJECT_ROOT))
 

@@ -13,7 +13,7 @@ parser.add_argument(
 parser.add_argument(
     "--output", 
     type=str, 
-    default=str(PROJECT_ROOT / "videos" / "parking_lot_resized.mp4"), 
+    default=str(PROJECT_ROOT / "videos" / "parking_lot.mp4"), 
     help="Output video path"
 )
 parser.add_argument(
