@@ -1,33 +1,49 @@
+import importlib
 from pathlib import Path
-import pytest
+import unittest
+
 from core.settings import (
-    PROJECT_ROOT,
-    CONFIG_PATH,
-    VIDEO_PATH,
-    MODEL_PATH,
     CONFIDENCE_THRESHOLD,
+    CONFIG_PATH,
     DEVICE,
+    MODEL_PATH,
+    PARKING_SLOTS_PATH,
+    PROJECT_ROOT,
+    ROI_PATH,
+    VIDEO_PATH,
 )
 
-def test_project_structure_and_paths():
-    #Test that the project structure and paths are set up correctly.
-    assert isinstance(PROJECT_ROOT, Path)
-    assert PROJECT_ROOT.exists(), f"Project root directory not found: {PROJECT_ROOT}"
 
-    assert isinstance(CONFIG_PATH, Path)
-    assert CONFIG_PATH.exists(), f"config.yaml file not found: {CONFIG_PATH}"
+class TestSettings(unittest.TestCase):
+    def test_project_structure_and_paths(self):
+        """Verify that the project root and config.yaml exist."""
+        self.assertIsInstance(PROJECT_ROOT, Path)
+        self.assertTrue(PROJECT_ROOT.exists(), f"Project root directory not found: {PROJECT_ROOT}")
 
-def test_settings_loaded_correctly():
-    #Test that the critical setting variables loaded from the config file have the correct types and values.
-    # Test that the threshold values are in a logical range
-    assert isinstance(CONFIDENCE_THRESHOLD, float)
-    assert 0.0 <= CONFIDENCE_THRESHOLD <= 1.0
+        self.assertIsInstance(CONFIG_PATH, Path)
+        self.assertTrue(CONFIG_PATH.exists(), f"config.yaml file not found: {CONFIG_PATH}")
 
-    # Test that the device selection is a string
-    assert isinstance(DEVICE, str)
-    assert DEVICE in ["cpu", "cuda:0"] or DEVICE.startswith("cuda:")
+    def test_settings_loaded_correctly(self):
+        """Verify that critical setting variables have valid types and ranges."""
+        self.assertIsInstance(CONFIDENCE_THRESHOLD, float)
+        self.assertTrue(0.0 <= CONFIDENCE_THRESHOLD <= 1.0)
 
-def test_model_and_video_paths_configured():
-    #Test that the model and video paths are configured as Path objects.
-    assert isinstance(VIDEO_PATH, Path)
-    assert isinstance(MODEL_PATH, Path)
+        self.assertIsInstance(DEVICE, str)
+        self.assertTrue(DEVICE in ["cpu", "cuda:0"] or DEVICE.startswith("cuda:"))
+
+    def test_model_video_and_roi_paths_configured(self):
+        """Verify that model, video, and ROI paths are configured as Path objects."""
+        for path_obj in (VIDEO_PATH, MODEL_PATH, ROI_PATH, PARKING_SLOTS_PATH):
+            self.assertIsInstance(path_obj, Path)
+            self.assertTrue(path_obj.is_absolute())
+
+    def test_roi_entrypoints_import_cleanly(self):
+        """Ensure ROI selector entrypoint modules can be imported without error."""
+        select_roi_mod = importlib.import_module("roi.select_roi")
+        select_slots_mod = importlib.import_module("roi.select_slots")
+        self.assertTrue(hasattr(select_roi_mod, "ROI_PATH"))
+        self.assertTrue(hasattr(select_slots_mod, "PARKING_SLOTS_PATH"))
+
+
+if __name__ == "__main__":
+    unittest.main()

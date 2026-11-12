@@ -18,3 +18,5 @@ benchmark:
   measured_frames: 100
 paths:
   video_path: "videos/parking_lot_resized.mp4"
+  roi_path: "outputs/roi/parking_roi.json"
+  parking_slots_path: "outputs/roi/parking_slots.json"

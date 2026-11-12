@@ -11,7 +11,10 @@ CONFIG_PATH = PROJECT_ROOT / "config.yaml"
 with open(CONFIG_PATH, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
-VIDEO_PATH = PROJECT_ROOT / config["paths"]["video_path"]
+paths_cfg = config.get("paths", {})
+VIDEO_PATH = PROJECT_ROOT / paths_cfg.get("video_path", "videos/parking_lot_resized.mp4")
+ROI_PATH = PROJECT_ROOT / paths_cfg.get("roi_path", "outputs/roi/parking_roi.json")
+PARKING_SLOTS_PATH = PROJECT_ROOT / paths_cfg.get("parking_slots_path", "outputs/roi/parking_slots.json")
 MODEL_PATH = PROJECT_ROOT / config["model"]["path"]
 
 CONFIDENCE_THRESHOLD = config["inference"]["conf"]
