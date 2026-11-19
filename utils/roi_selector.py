@@ -247,5 +247,3 @@ def load_roi(frame, output_path):
     print(f"{len(polygons)} ROI polygon(s) loaded successfully.")
 
     return polygons
-
-        

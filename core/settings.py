@@ -11,14 +11,18 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = Path(os.getenv("PARKING_DATA_DIR", PROJECT_ROOT))
 
 CONFIG_PATH = PROJECT_ROOT / "config.yaml"
+
 with open(CONFIG_PATH, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
 VIDEO_PATH = PROJECT_ROOT / config["paths"]["video_path"]
 
-# YAML dosyasını oku
-with open(CONFIG_PATH, "r", encoding="utf-8") as file:
-    config = yaml.safe_load(file)
+ROI_DIR = PROJECT_ROOT / "roi"
+ROI_DIR.mkdir(parents=True, exist_ok=True)
+
+ROI_PATH = ROI_DIR / "parking_roi.json"
+PARKING_SLOTS_PATH = ROI_DIR / "parking_slots.json"
+
 
 MODEL_PATH = PROJECT_ROOT / config["model"]["path"]
 
